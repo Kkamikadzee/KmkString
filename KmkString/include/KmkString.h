@@ -4,22 +4,19 @@
 #include <ostream>
 #include <istream>
 
-using std::initializer_list;
-using std::istream;
-using std::ostream;
-using std::size_t;
-
 namespace Kmk
 {
+    using std::size_t;
+
     class String final
     {
     public:
-        friend ostream &operator<<(ostream &, const String &);
+        friend std::ostream &operator<<(std::ostream &, const String &);
 
         String();
         String(const size_t, const char);
         String(const char *);
-        String(initializer_list<char>);
+        String(std::initializer_list<char>);
         String(const String &);
         String(String &&) noexcept;
         ~String() noexcept;
@@ -31,7 +28,7 @@ namespace Kmk
 
         String &operator+=(const char);
         String &operator+=(const char *);
-        String &operator+=(initializer_list<char>);
+        String &operator+=(std::initializer_list<char>);
         String &operator+=(const String &);
 
         const char &operator[](const size_t) const;
@@ -53,8 +50,10 @@ namespace Kmk
 
         String &Concat(const char);
         String &Concat(const char *);
-        String &Concat(initializer_list<char>);
+        String &Concat(std::initializer_list<char>);
         String &Concat(const String &);
+
+        void Swap(String &str) noexcept;
 
     private:
         static const int minCapacity = 16;
@@ -70,8 +69,17 @@ namespace Kmk
     bool operator==(const String &, const String &);
     bool operator!=(const String &, const String &);
     String operator+(const String &, const String &);
-    ostream &operator<<(ostream &, const String &);
-    istream &operator>>(istream &, String &);
+    std::ostream &operator<<(std::ostream &, const String &);
+    std::istream &operator>>(std::istream &, String &);
+
+    void swap(String &lhs, String &rhs);
 } // namespace Kmk
+
+namespace std
+{
+    using Kmk::String;
+    template <>
+    void swap<String>(String &lhs, String &rhs);
+} // namespace std
 
 #endif // __STRING_H__

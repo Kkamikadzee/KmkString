@@ -8,7 +8,7 @@
 using Kmk::String;
 using std::vector;
 
-ostream &PrintLikeTable(ostream &out, const String &cell1, const String &cell2);
+std::ostream &PrintLikeTable(std::ostream &out, const String &cell1, const String &cell2);
 vector<String> GetWordsFromFile(char *pathToFile);
 vector<String> GetWordsFromArgv(int argc, char *argv[]);
 bool StringCompareWithoutCase(const String &lhs, const String &rhs);
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-ostream &PrintLikeTable(ostream &out, const String &cell1, const String &cell2)
+std::ostream &PrintLikeTable(std::ostream &out, const String &cell1, const String &cell2)
 {
     out
         << std::left

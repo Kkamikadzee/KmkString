@@ -25,7 +25,7 @@ namespace Kmk
         Concat(str);
     }
 
-    String::String(initializer_list<char> il) : String()
+    String::String(std::initializer_list<char> il) : String()
     {
         // Дополнительная ячейка для символа конца строки
         Reallocate(il.size() + 1);
@@ -98,7 +98,7 @@ namespace Kmk
         return Concat(str);
     }
 
-    String &String::operator+=(initializer_list<char> il)
+    String &String::operator+=(std::initializer_list<char> il)
     {
         return Concat(il);
     }
@@ -203,7 +203,7 @@ namespace Kmk
         return *this;
     }
 
-    String &String::Concat(initializer_list<char> il)
+    String &String::Concat(std::initializer_list<char> il)
     {
         if (!HasFreePlaces(il.size()))
         {
@@ -225,6 +225,15 @@ namespace Kmk
         CopyRange(str.Begin(), str.End(), firstFree);
 
         return *this;
+    }
+
+    void String::Swap(String &str) noexcept
+    {
+        using std::swap;
+
+        swap(chars, str.chars);
+        swap(capacity, str.capacity);
+        swap(firstFree, str.firstFree);
     }
 
     inline const bool String::HasFreePlaces(const size_t countChars) const
@@ -319,7 +328,7 @@ namespace Kmk
         return std::move(tmp);
     }
 
-    ostream &operator<<(ostream &out, const String &str)
+    std::ostream &operator<<(std::ostream &out, const String &str)
     {
         if (str.GetSize())
         {
@@ -329,7 +338,7 @@ namespace Kmk
         return out;
     }
 
-    istream &operator>>(istream &is, String &str)
+    std::istream &operator>>(std::istream &is, String &str)
     {
         char *buffer = new char[4096];
 
@@ -344,4 +353,18 @@ namespace Kmk
 
         return is;
     }
+
+    void swap(String &lhs, String &rhs)
+    {
+        lhs.Swap(rhs);
+    }
 } // namespace Kmk
+
+namespace std
+{
+    template <>
+    void swap<String>(String &lhs, String &rhs)
+    {
+        swap(lhs, rhs);
+    }
+} // namespace std
