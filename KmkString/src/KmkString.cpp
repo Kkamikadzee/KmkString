@@ -68,6 +68,8 @@ namespace Kmk
     {
         if (this != &str)
         {
+            Free();
+
             chars = str.chars;
             capacity = str.capacity;
             firstFree = str.firstFree;
