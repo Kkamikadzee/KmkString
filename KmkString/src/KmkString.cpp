@@ -147,36 +147,6 @@ namespace Kmk
         return std::move(tmp);
     }
 
-    inline const size_t String::GetSize() const
-    {
-        return firstFree - chars;
-    }
-
-    inline const size_t String::GetCapacity() const
-    {
-        return capacity - chars;
-    }
-
-    inline const char *const String::Begin() const noexcept
-    {
-        return chars;
-    }
-
-    inline char *const String::Begin() noexcept
-    {
-        return chars;
-    }
-
-    inline const char *const String::End() const noexcept
-    {
-        return firstFree;
-    }
-
-    inline char *const String::End() noexcept
-    {
-        return firstFree;
-    }
-
     String &String::Concat(const char c)
     {
         if (!HasFreePlaces(1))
@@ -238,17 +208,6 @@ namespace Kmk
         swap(firstFree, str.firstFree);
     }
 
-    inline const bool String::HasFreePlaces(const size_t countChars) const
-    {
-        // Всегда должно оставаться последнее место под символ конца строки
-        return GetCapacity() ? capacity - firstFree - 1 > countChars : false;
-    }
-
-    inline void String::Free()
-    {
-        delete[] chars;
-    }
-
     const size_t String::CalcNewCapacity(const size_t countNewChars) const
     {
         auto currentCapacity = GetCapacity();
@@ -287,14 +246,6 @@ namespace Kmk
         chars = newChars;
         capacity = newCapacity;
         firstFree = newFirstFree;
-    }
-
-    inline void String::CopyRange(const char *begin, const char *end, char *&insertPtr)
-    {
-        for (auto c = begin; c != end; ++c)
-        {
-            *(insertPtr++) = *c;
-        }
     }
 
     bool operator==(const String &lhs, const String &rhs)

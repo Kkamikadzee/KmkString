@@ -63,7 +63,6 @@ namespace Kmk
         void Free();
         const size_t CalcNewCapacity(const size_t) const;
         void Reallocate(const size_t);
-        void CopyRange(const char *, const char *, char *&);
     };
 
     bool operator==(const String &, const String &);
@@ -73,6 +72,57 @@ namespace Kmk
     std::istream &operator>>(std::istream &, String &);
 
     void swap(String &lhs, String &rhs);
+
+    void CopyRange(const char *, const char *, char *&);
+
+    inline const size_t String::GetSize() const
+    {
+        return firstFree - chars;
+    }
+
+    inline const size_t String::GetCapacity() const
+    {
+        return capacity - chars;
+    }
+
+    inline const char *const String::Begin() const noexcept
+    {
+        return chars;
+    }
+
+    inline char *const String::Begin() noexcept
+    {
+        return chars;
+    }
+
+    inline const char *const String::End() const noexcept
+    {
+        return firstFree;
+    }
+
+    inline char *const String::End() noexcept
+    {
+        return firstFree;
+    }
+
+    inline const bool String::HasFreePlaces(const size_t countChars) const
+    {
+        // Всегда должно оставаться последнее место под символ конца строки
+        return GetCapacity() ? capacity - firstFree - 1 > countChars : false;
+    }
+
+    inline void String::Free()
+    {
+        delete[] chars;
+    }
+
+    inline void CopyRange(const char *begin, const char *end, char *&insertPtr)
+    {
+        for (auto c = begin; c != end; ++c)
+        {
+            *(insertPtr++) = *c;
+        }
+    }
 } // namespace Kmk
 
 namespace std
