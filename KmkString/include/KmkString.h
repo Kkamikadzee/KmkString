@@ -56,7 +56,7 @@ namespace Kmk
         void Swap(String &str) noexcept;
 
     private:
-        static const int minCapacity = 16;
+        static const size_t minCapacity = 16;
 
         char *chars, *capacity, *firstFree;
         const bool HasFreePlaces(const size_t) const;
